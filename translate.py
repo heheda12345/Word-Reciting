@@ -28,7 +28,8 @@ if __name__ == '__main__':
     f = open(src)
     wordlist = {}
     for en in f.readlines():
-        ch = convert(en.strip())
+        en = en.strip()
+        ch = convert(en)
         wordlist[en] = ch
     f.close()
     f = open(dst, 'w')
