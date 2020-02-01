@@ -57,7 +57,7 @@ class ReviewReciter(Reciter):
         forget = []
         while len(todo) > 0:
             if (len(todo) > 5):
-                todo.shuffle()
+                random.shuffle(todo)
             self.clear_forget()
             for w, idx in zip(todo, range(1, len(todo) + 1)):
                 inp = input("{}/{} {}".format(idx, len(todo), w[0]))
