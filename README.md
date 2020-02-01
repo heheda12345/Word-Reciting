@@ -17,7 +17,7 @@
   2. `test` 所有单词只问一次
 
 * `-s START -t END` 背词表第START至END的单词，编号从0开始。默认从第0个单词开始，到最后一个单词结束
-
+例如，`python recite.py -l TOEFL/WordList-1.ch -m recite -s 1 -t 2`表示背`TOEFL/WordList-1.ch`的第1至2个单词
 ## 词表
 
 将根据作者背单词进度不定期更新，目前有

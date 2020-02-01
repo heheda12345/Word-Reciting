@@ -1,4 +1,5 @@
 import argparse, json, random, time, os
+from cprint import *
 
 log_dir = "log"
 
@@ -17,6 +18,11 @@ class Reciter:
         f = open(forget_path, "w")
         json.dump(self.forgets, f)
         f.close()
+
+    def print_forget(self):
+        for f in self.forgets:
+            cprint.ok(f)
+            cprint.info(self.forgets[f])
 
     def run(self):
         for w, idx in zip(self.wordlist, range(1, len(self.wordlist) + 1)):
@@ -96,6 +102,8 @@ if __name__ == '__main__':
         forget_path = args.forget
 
     if args.mode == 'test':
-        Reciter(wordlist, forget_path).run()
+        reciter = Reciter(wordlist, forget_path)
     elif args.mode == 'recite':
-        ReviewReciter(wordlist, forget_path).run()
+        reciter = ReviewReciter(wordlist, forget_path)
+    reciter.run()
+    reciter.print_forget()
