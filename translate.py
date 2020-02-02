@@ -1,8 +1,8 @@
-import requests
+import requests, sys, json, os
 from bs4 import BeautifulSoup
-import sys
 from cprint import *
-import json
+
+voice_dir = "voice"
 
 def convert(word):
     try:
@@ -14,12 +14,25 @@ def convert(word):
             ret += item.text + '\n'
         return ret
     except:
-        cprint.err("{}: Fail".format(word))
         return ""
-    finally:
-        cprint.info("{}: Success".format(word))
-        return ret
 
+def download_voice(word):
+    if not os.path.exists(voice_dir):
+        print('Voice directory {} does not exist, created'.format(voice_dir))
+        os.makedirs(voice_dir)
+    url = "http://dict.youdao.com/dictvoice?audio={}&type=2".format(word) # type=2 means american voice
+    resp = requests.get(url)
+    with open(os.path.join(voice_dir, "{}.mp3".format(word)), "wb") as f:
+        f.write(resp.content)
+    return True
+    # try:
+    #     url = "http://dict.youdao.com/dictvoice?audio={}&type=2".format(word) # type=2 means american voice
+    #     resp = requests.get(url)
+    #     with open(os.path.join(voice_dir, "{}.mp3".format(word)), "w") as f:
+    #         f.write(resp.content)
+    #     return True
+    # except:
+    #     return False
 
 if __name__ == '__main__':
     src = sys.argv[1]
@@ -31,6 +44,10 @@ if __name__ == '__main__':
         en = en.strip()
         ch = convert(en)
         wordlist[en] = ch
+        if ch != "" and download_voice(en):
+            cprint.info("{}: Success".format(en))
+        else:
+            cprint.err("{}: Fail".format(en))
     f.close()
     f = open(dst, 'w')
     json.dump(wordlist, f)
