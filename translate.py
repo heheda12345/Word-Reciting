@@ -39,16 +39,21 @@ if __name__ == '__main__':
     dst = sys.argv[2]
     cprint.ok("Convert {} to {}".format(src, dst))
     f = open(src)
+    succ = 0
+    fail = 0
     wordlist = {}
     for en in f.readlines():
         en = en.strip()
         ch = convert(en)
         wordlist[en] = ch
-        if ch != "" and download_voice(en):
+        if ch != "":# and download_voice(en):
             cprint.info("{}: Success".format(en))
+            succ += 1
         else:
             cprint.err("{}: Fail".format(en))
+            fail += 1
     f.close()
+    cprint.ok("Total: {} success {} fail".format(succ, fail))
     f = open(dst, 'w')
     json.dump(wordlist, f)
     f.close()
